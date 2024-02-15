@@ -562,7 +562,9 @@ def metadata(initial_data) -> Optional[YouTubeMetadata]:
         try:
             metadata_rows: List = initial_data["engagementPanels"][2]["engagementPanelSectionListRenderer"]["content"]["structuredDescriptionContentRenderer"]["items"][2]['horizontalCardListRenderer']['cards'][0]['videoAttributeViewModel']
         except (KeyError, IndexError):
-            # If there's an exception accessing this data, it probably doesn't exist.
-            return {'song': None, 'artist': None}
+            try:
+                metadata_rows: List = initial_data["engagementPanels"][1]["engagementPanelSectionListRenderer"]["content"]["structuredDescriptionContentRenderer"]["items"][1]['horizontalCardListRenderer']['cards'][0]['videoAttributeViewModel']
+            except (KeyError, IndexError):
+                return {'song': None, 'artist': None}
 
     return {'song': metadata_rows['title'], 'artist': metadata_rows['subtitle']}
